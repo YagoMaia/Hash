@@ -5,7 +5,7 @@
 int main(void){
     int num = 0;
     FILE *file;
-    file = fopen("teste.txt", "r");
+    file = fopen("brascubas.txt", "r");
     // fprintf(file, "Algo depois do hello world."); //Vai limpar o arquivo pra adicionar o que está no fprintf
     
     if(file == NULL){
@@ -14,7 +14,7 @@ int main(void){
         exit(0);
     }
     
-    char frase[100], palavras[100],*token;
+    char frase[100];
 
     // Lendo strings completas
     //while(fgets(frase, 100, file) != NULL){
@@ -23,15 +23,12 @@ int main(void){
 
     // Lendo palavras da string -> Pensar numa maneira de separar as palavras
     while(fgets(frase, 100, file) != NULL){
-        strcpy(frase, palavras);
-        for(int i = 0; palavras[i] != '\n'; i++){
-            printf("%c", palavras[i]);
-            if(palavras[i] == ' ') printf("\n");
+        for(int i = 0; i < strlen(frase); i++){
+            if(frase[i] == ' ' || frase[i] == '\n'){
+                if(frase[i] != '\n') num++;
+            }
         }
-        token = strtok(frase, " ");
-        printf("\n");
-        printf("%s\n", token);
-        num++;
+        //printf("%s", frase);
     }
     fclose(file);
     printf("Nessa arquivo ha %d palavras\n", num);
