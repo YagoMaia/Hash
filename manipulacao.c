@@ -23,14 +23,14 @@ int leitor_linhas(char texto[TAM_2], FILE *arquivo, char separadas[TAM_1])
                 {
                     if(k!= 0) numero_palavras++; //Gambiarra 
                     separadas[k] = '\0'; 
-                    printf("Valor do k: %d ", k);
-                    puts(separadas);
+                    //printf("Valor do k: %d ", k);
+                    //puts(separadas);
                     k = -1;
                 }
             }
             
         }
-        printf("Fim da linha\n");
+       // printf("Fim da linha\n");
     }
     return numero_palavras;
 }
@@ -39,7 +39,7 @@ int main(void)
 {
     int num = 0;
     FILE *file;
-    file = fopen("teste.txt", "r");
+    file = fopen("brascubas.txt", "r");
     // fprintf(file, "Algo depois do hello world."); //Vai limpar o arquivo pra adicionar o que está no fprintf
 
     if (file == NULL)
