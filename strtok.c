@@ -13,6 +13,13 @@ typedef struct dados
     unsigned int cont;
 } Dados;
 
+int hashcodeA(char *s)
+{
+    int r = 0, i;
+    for (i = 0; s[i] != '\0'; i++)
+        r = (int)s[i] + 2 * r;
+    return r;
+}
 unsigned int hashcode(char *s)
 {
     unsigned int r = 0, i;
@@ -47,37 +54,11 @@ void analise_tabela(Dados tabela[], unsigned int posicao, char *palavra_texto)
     }
 }
 
-int analise_acentuacao2(char *palavra)
-{
-    char *acentuacao = {"áâàãéèêíõôóúü"};
-    for (unsigned int l = 0; l < strlen(palavra); l++)
-    {
-        for (int c = 0; c < 27; c++)
-        {
-            if (palavra[l] == acentuacao[c])
-            {
-                if (c >= 0 && c <= 3)
-                    palavra[l] = 'a';
-                else if (c >= 4 && c <= 6)
-                    palavra[l] = 'e';
-                else if (c == 7)
-                    palavra[l] = 'i';
-                else if (c >= 8 && c <= 10)
-                    palavra[l] = 'o';
-                else
-                    palavra[l] = 'u';
-            }
-        }
-    }
-    return 1;
-}
-
 int analise_prep(char *palavra)
 {
     char matriz_prep[prepos][max_tam_prep] = {"pelo", "ao", "pro", "do", "no", "pela", "a", "pra", "da", "na", "pelos", "aos", "pros", "dos", "nos", "pelas", "as", "pras", "das", "nas", "num", "numa", "numas", "nele", "neles", "nelas", "nelas", "neste", "nisto", "nesse", "nesses", "nisso", "aquele", "aquela", "daquilo", "daquele", "naquele", "naquilo", "de"};
     if (palavra != NULL)
     {
-        analise_acentuacao2(palavra);
         for (int i = 0; i < prepos; i++)
         {
             if (strcmp(palavra, matriz_prep[i]) == 0)
@@ -96,59 +77,18 @@ void maiscula_minuscula(char *palavra)
     char *minuscula = {"abcdefghijklmnopqrstuvwxyz"}; //{abcdefghijklmnopqrstuvwxyz}
     if (palavra != NULL)
     {
-        // puts(palavra);
         for (unsigned int i = 0; i < strlen(palavra); i++)
         {
             for (int j = 0; j < 26; j++)
             {
                 if (palavra[i] == maiscula[j])
                 {
-                    // printf("Palavra : %s, Letra Maiscula: %c\n", palavra, palavra[i]);
                     palavra[i] = minuscula[j];
                 }
             }
         }
     }
 }
-
-int analise_acentuacao(char *palavra)
-{
-    char *a_acentuado = {"áâàã"};
-    char *e_acentuado = {"éèê"};
-    char *i_acentuado = {"í"};
-    char *o_acentuado = {"õôó"};
-    char *u_acentuado = {"úü"};
-    for (unsigned int l = 0; l < strlen(palavra); l++)
-    {
-        for (unsigned int a = 0; a < strlen(a_acentuado); a++)
-        {
-            if (palavra[l] == a_acentuado[a])
-                palavra[l] = 'a';
-        }
-        for (unsigned int e = 0; e < strlen(e_acentuado); e++)
-        {
-            if (palavra[l] == a_acentuado[e])
-                palavra[l] = 'e';
-        }
-        for (unsigned int i = 0; i < strlen(i_acentuado); i++)
-        {
-            if (palavra[l] == i_acentuado[i])
-                palavra[l] = 'i';
-        }
-        for (unsigned int o = 0; o < strlen(o_acentuado); o++)
-        {
-            if (palavra[l] == o_acentuado[o])
-                palavra[l] = 'o';
-        }
-        for (unsigned int u = 0; u < strlen(u_acentuado); u++)
-        {
-            if (palavra[l] == u_acentuado[u])
-                palavra[l] = 'u';
-        }
-    }
-    return 1;
-}
-
 
 unsigned int leitor_linhas(char texto[TAM_2], FILE *arquivo, Dados tabela_hash[TABELA])
 {
@@ -160,20 +100,16 @@ unsigned int leitor_linhas(char texto[TAM_2], FILE *arquivo, Dados tabela_hash[T
     {
         sub_string = strtok(texto, black_list); // Primeira palavra da linha
         maiscula_minuscula(sub_string);         // Convertendo todas as letras da primeira palavra da frase em minusculo
-        analise_acentuacao2(sub_string);
         while (sub_string != NULL)
         {
             maiscula_minuscula(sub_string); // Convertendo as demais palavras da linha
-            // analise_acentuacao2(sub_string);
             if (analise_prep(sub_string) == 1)
             {
                 sub_string = strtok(NULL, black_list);
                 maiscula_minuscula(sub_string);
-                // analise_acentuacao2(sub_string);
             }
             if (sub_string != NULL)
             {
-                // maiscula_minuscula(sub_string);
                 pos_tabela = MAD(hashcode(sub_string));
                 analise_tabela(tabela_hash, pos_tabela, sub_string);
                 sub_string = strtok(NULL, black_list);
@@ -197,9 +133,12 @@ void conteudo_tabela(Dados tabela[])
 
 void acessar_palavra(Dados tabela[], char *palavra_desejada)
 {
-    printf("Posicao da tabela hash: %i\n"), hashcode(palavra_desejada);
-    printf("Palavra: %s\n", tabela[MAD(hashcode(palavra_desejada))].palavra);
-    printf("Quantidade: %d\n", tabela[MAD(hashcode(palavra_desejada))].cont);
+    if(tabela[MAD(hashcode(palavra_desejada))].cont > 0){
+        //printf("Posicao da tabela hash: %u\n"), MAD(hashcode(palavra_desejada));
+        printf("Palavra: %s\n", tabela[MAD(hashcode(palavra_desejada))].palavra);
+        printf("Quantidade: %d\n", tabela[MAD(hashcode(palavra_desejada))].cont);
+    }
+    else printf("Não existe tal palavra na tabela Hash\n");
 }
 
 int main(void)
@@ -226,7 +165,7 @@ int main(void)
     num = leitor_linhas(frase, file, tabela_hash);
     fclose(file);
     // conteudo_tabela(tabela_hash);
-    acessar_palavra(tabela_hash, "cubas");
+    acessar_palavra(tabela_hash, "FILHODUMAPUTA");
     printf("Nessa arquivo ha %d palavras\n", num);
     return 0;
 }

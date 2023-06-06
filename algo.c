@@ -91,27 +91,34 @@ void conteudo_tabela(Dados tabela[])
 
 int main(void)
 {
-    Dados tabela_hash[TABELA];
-    for (unsigned int i = 0; i < TABELA; i++)
-    {
-        tabela_hash[i].cont = 0;
+    char *acentuacao[13][5] = {"á", "â", "à", "ã", "é", "è", "ê", "í", "õ", "ô", "ó", "ú", "ü"};
+    char * teste = "teste";
+    // Dados tabela_hash[TABELA];
+    // for (unsigned int i = 0; i < TABELA; i++)
+    //{
+    //     tabela_hash[i].cont = 0;
+    // }
+    // unsigned int num = 0;
+    // FILE *file;
+    // file = fopen("brascubas.txt", "r");
+
+    //if (file == NULL)
+    //{
+    //    printf("Não existe tal arquivo");
+    //    getchar();
+    //    exit(0);
+    //}
+
+    //char frase[TAM_2];
+
+    //num = leitor_linhas(frase, file, tabela_hash);
+    //fclose(file);
+    //conteudo_tabela(tabela_hash);
+    for(int b = 0; b < 13; b++){
+        //printf("Posicao: %d // char: %d\n", b, acentuacao[b]);
+        int char_int = acentuacao[b];
+        printf("char int = %d\n", char_int);
+        //puts(acentuacao[b]);
     }
-    unsigned int num = 0;
-    FILE *file;
-    file = fopen("brascubas.txt", "r");
-
-    if (file == NULL)
-    {
-        printf("Não existe tal arquivo");
-        getchar();
-        exit(0);
-    }
-
-    char frase[TAM_2];
-
-    num = leitor_linhas(frase, file, tabela_hash);
-    fclose(file);
-    conteudo_tabela(tabela_hash);
-    printf("Nessa arquivo ha %d palavras\n", num);
     return 0;
 }
