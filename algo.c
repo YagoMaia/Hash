@@ -44,33 +44,32 @@ void analise_tabela(Dados tabela[], unsigned int posicao, char *palavra_texto)
         tabela[posicao].cont++;
 }
 
-int analise_prep(char *palavra){
-    char matriz_prep[prepos][max_tam_prep] = {"pelo", "ao", "pro", "do", "no", "pela", "a", "pra", "da", "na", "pelos", "aos", "pros", "dos", "nos", "pelas", "as", "pras", "das", "nas", "num", "numa", "numas", "nele", "neles", "nelas", "nelas", "neste", "nisto", "nesse", "nesses", "nisso", "aquele", "aquela", "daquilo", "daquele", "naquele", "naquilo", "de"};
-    for(int i = 0; i < prepos; i++){
-        if(strcmp(palavra, matriz_prep[i])) return 1;
-    }
-    return 0;
-}
-
 unsigned int leitor_linhas(char texto[TAM_2], FILE *arquivo, Dados tabela_hash[TABELA])
 {
     char *sub_string;
-    char black_list[TAM_1] = " ,.!?\n\r#@-_+=/;*:1234567890()";
-    
+    char black_list[TAM_1] = " ,.!?\n\r#@-_+=/;*:1234567890";
+    char matriz_prep[prepos][max_tam_prep] = {{"pelo"}, {"ao"}, {"pro"}, {"do"}, {"no"}, {"pela"}, {"a"}, {"pra"}, {"da"}, {"na"}, {"pelos"}, {"aos"}, {"pros"}, {"dos"}, {"nos"}, {"pelas"}, {"as"}, {"pras"}, {"das"}, {"nas"}, {"num"}, {"numa"}, {"numas"}, {"nele"}, {"neles"}, {"nelas"}, {"nelas"}, {"neste"}, {"nisto"}, {"nesse"}, {"nesses"}, {"nisso"}, {"aquele"}, {"aquela"}, {"daquilo"}, {"daquele"}, {"naquele"}, {"naquilo"}, {"de"}};
     unsigned int numero_palavras = 0;
     unsigned int pos_tabela;
+    int validador;
     while (fgets(texto, TAM_2, arquivo) != NULL)
     {
         sub_string = strtok(texto, black_list);
         while (sub_string != NULL)
         {
-            if(analise_prep(sub_string) == 1) sub_string = strtok(NULL, black_list);
-            if (sub_string != NULL)
+            validador = 0;
+            for (int i = 0; i < prepos; i++)
             {
-                //puts(sub_string);
+                if (strcmp(sub_string, matriz_prep[i]) == 0)
+                    // sub_string = strtok(NULL, black_list);
+                    validador = 1;
+            }
+            if (validador == 0)
+            {
+                // puts(sub_string);
                 pos_tabela = MAD(hashcode(sub_string));
                 analise_tabela(tabela_hash, pos_tabela, sub_string);
-                //printf("Posicao tabela = %d\n", pos_tabela);
+                // printf("Posicao tabela = %d\n", pos_tabela);
                 sub_string = strtok(NULL, black_list);
                 numero_palavras++;
             }
@@ -85,7 +84,7 @@ void conteudo_tabela(Dados tabela[])
     {
         if (tabela[i].cont != 0)
         {
-            printf("Palavra: %s // Vezes %d\n", tabela[i].palavra, tabela[i].cont);
+            // printf("Palavra: %s // Vezes %d\n", tabela[i].palavra, tabela[i].cont);
         }
     }
 }

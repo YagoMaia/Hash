@@ -53,6 +53,7 @@ int main(void)
 
     num = leitor_linhas(frase, file, palavra);
     fclose(file);
+    
     printf("Nessa arquivo ha %d palavras\n", num);
     return 0;
 }
