@@ -127,7 +127,7 @@ void conteudo_tabela(Dados tabela[])
 void acessar_palavra(Dados tabela[], char *palavra_desejada)
 {
     if(tabela[MAD(hashcode(palavra_desejada))].cont > 0){
-        //printf("Posicao da tabela hash: %u\n"), MAD(hashcode(palavra_desejada));
+        //printf("Posicao da tabela hash: %d\n"), MAD(hashcode(palavra_desejada));
         printf("Palavra: %s\n", tabela[MAD(hashcode(palavra_desejada))].palavra);
         printf("Quantidade: %d\n", tabela[MAD(hashcode(palavra_desejada))].cont);
     }
@@ -157,8 +157,8 @@ int main(void)
 
     num = leitor_linhas(frase, file, tabela_hash);
     fclose(file);
-    conteudo_tabela(tabela_hash);
-    acessar_palavra(tabela_hash, "leitor");
+    //conteudo_tabela(tabela_hash);
+    acessar_palavra(tabela_hash, "toda");
     printf("Nessa arquivo ha %d palavras\n", num);
     return 0;
 }
