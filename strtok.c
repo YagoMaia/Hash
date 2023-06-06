@@ -13,16 +13,9 @@ typedef struct dados
     unsigned int cont;
 } Dados;
 
-int hashcodeA(char *s)
+int hashcode(char *s)
 {
     int r = 0, i;
-    for (i = 0; s[i] != '\0'; i++)
-        r = (int)s[i] + 2 * r;
-    return r;
-}
-unsigned int hashcode(char *s)
-{
-    unsigned int r = 0, i;
     for (i = 0; s[i] != '\0'; i++)
     {
         r = (r << 5) | (r >> 27);
@@ -31,7 +24,7 @@ unsigned int hashcode(char *s)
     return r;
 }
 
-unsigned int MAD(unsigned int hash)
+unsigned int MAD(int hash)
 {
     unsigned int multiplica = 8;
     unsigned int soma = 11;
@@ -164,8 +157,8 @@ int main(void)
 
     num = leitor_linhas(frase, file, tabela_hash);
     fclose(file);
-    // conteudo_tabela(tabela_hash);
-    acessar_palavra(tabela_hash, "FILHODUMAPUTA");
+    conteudo_tabela(tabela_hash);
+    acessar_palavra(tabela_hash, "leitor");
     printf("Nessa arquivo ha %d palavras\n", num);
     return 0;
 }
