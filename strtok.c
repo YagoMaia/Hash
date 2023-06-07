@@ -24,7 +24,7 @@ int hashcode(char *s)
     return r;
 }
 
-unsigned int MAD(int hash)
+int MAD(int hash)
 {
     unsigned int multiplica = 8;
     unsigned int soma = 11;
@@ -32,7 +32,7 @@ unsigned int MAD(int hash)
     return (((multiplica * hash + soma) % divisor_primo) % TABELA);
 }
 
-void analise_tabela(Dados tabela[], unsigned int posicao, char *palavra_texto)
+void analise_tabela(Dados tabela[], int posicao, char *palavra_texto)
 {
     if (palavra_texto != NULL)
     {
@@ -57,11 +57,11 @@ int analise_prep(char *palavra)
             if (strcmp(palavra, matriz_prep[i]) == 0)
             {
                 
-                return 1;
+                return 0;
             }
         }
     }
-    return 0;
+    return 1;
 }
 
 void maiscula_minuscula(char *palavra)
@@ -96,7 +96,7 @@ unsigned int leitor_linhas(char texto[TAM_2], FILE *arquivo, Dados tabela_hash[T
         while (sub_string != NULL)
         {
             maiscula_minuscula(sub_string); // Convertendo as demais palavras da linha
-            if (analise_prep(sub_string) == 1)
+            if (analise_prep(sub_string) == 0)
             {
                 sub_string = strtok(NULL, black_list);
                 maiscula_minuscula(sub_string);
@@ -158,7 +158,7 @@ int main(void)
     num = leitor_linhas(frase, file, tabela_hash);
     fclose(file);
     //conteudo_tabela(tabela_hash);
-    acessar_palavra(tabela_hash, "toda");
+    acessar_palavra(tabela_hash, "leitor");
     printf("Nessa arquivo ha %d palavras\n", num);
     return 0;
 }
